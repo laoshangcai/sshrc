@@ -1,11 +1,11 @@
 package utils
 
 import (
-"bufio"
-"fmt"
-"io"
-"os"
-"strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strings"
 )
 
 type Config struct {
@@ -13,11 +13,6 @@ type Config struct {
 	Conflist map[string]map[string]string //configuration information slice
 }
 
-const (
-	RENAME  = "rename"
-	REMOVE  = "remove"
-	CHANGE  = "change"
-)
 //Create an empty configuration file
 func InitConfig(filepath string) *Config {
 	c := new(Config)
@@ -26,9 +21,8 @@ func InitConfig(filepath string) *Config {
 	return c
 }
 
-//To obtain corresponding value of the key values
-func (c *Config) GetValue(section , name string) string {
-	_,ok := c.Conflist[section]
+func (c *Config) GetValue(section, name string) string {
+	_,ok := c.Conflist[section][name]
 	if ok{
 		return c.Conflist[section][name]
 	}else{
@@ -44,12 +38,9 @@ func (c *Config) readList() map[string]map[string]string {
 		CheckErr(err)
 	}
 	defer file.Close()
-
 	c.Conflist = make(map[string]map[string]string)
-
 	var section string
 	var sectionMap map[string]string
-
 	isFirstSection := true
 	buf := bufio.NewReader(file)
 	for {
@@ -73,7 +64,6 @@ func (c *Config) readList() map[string]map[string]string {
 				isFirstSection = false
 			}
 			section = strings.TrimSpace(line[1 : len(line)-1])
-			fmt.Println(line[1 : len(line)-1])
 			sectionMap = make(map[string]string)
 		default:
 			i := strings.IndexAny(line, "=")
@@ -85,10 +75,8 @@ func (c *Config) readList() map[string]map[string]string {
 		}
 	}
 	c.Conflist[section] = sectionMap
-	fmt.Println(c.Conflist)
 	return c.Conflist
 }
-
 
 func CheckErr(err error) string {
 	if err != nil {
@@ -96,6 +84,4 @@ func CheckErr(err error) string {
 	}
 	return "Notfound this error"
 }
-
-
 
