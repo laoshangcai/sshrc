@@ -7,23 +7,34 @@ import (
     "lsc.com/sshrc/utils"
 )
 
-type HostConfig struct {
+type Configinfo struct {
 	 Host string
 	 User string
 	 Passwd string
 }
+
+var InfoList = make([]Configinfo, 0)
+var InfoMap = make(map[string]Configinfo, 0)
+
 
 func Getvalue(st string) string {
 	it := strings.Split(st," ")
 	for _, v := range it {
 		result := strings.Index(v,",")
 		if result == -1 {
-			fmt.Println(v)
+			fmt.Println("格式不对")
 		} else {
 			i := strings.Split(v,",")
-			for _, s := range i {
-				fmt.Println(s)
+
+			info := Configinfo {
+				Host: i[0],
+				User: i[1],
+				Passwd: i[2],
 			}
+			InfoList = append(InfoList,info)
+
+			InfoMap[info.Host] = info
+
 		}
 	}
 	return ""
@@ -34,5 +45,8 @@ func TestConfig(t *testing.T) {
 	var conf= utils.InitConfig("D:/awesomeProject/src/lsc.com/sshrc/hosts.ini")
 	value := conf.GetValue("server1", "host")
 	Getvalue(value)
-	
+
+	fmt.Println(InfoMap)
+
+
 }
