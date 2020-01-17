@@ -8,20 +8,20 @@ import (
 	"strings"
 )
 
-type Config struct {
-	filepath string                         //your ini file path directory+file
-	Conflist map[string]map[string]string //configuration information slice
+type Confi struct {
+	filepath string
+	Conflist map[string]map[string]string
 }
 
 //Create an empty configuration file
-func InitConfig(filepath string) *Config {
-	c := new(Config)
+func InitConfig(filepath string) *Confi {
+	c := new(Confi)
 	c.filepath = filepath
 	c.readList()
 	return c
 }
 
-func (c *Config) GetValue(section, name string) string {
+func (c *Confi) GetValue(section, name string) string {
 	_,ok := c.Conflist[section][name]
 	if ok{
 		return c.Conflist[section][name]
@@ -32,7 +32,7 @@ func (c *Config) GetValue(section, name string) string {
 
 //获取所有配置项
 //List all the configuration file
-func (c *Config) readList() map[string]map[string]string {
+func (c *Confi) readList() map[string]map[string]string {
 	file, err := os.Open(c.filepath)
 	if err != nil {
 		CheckErr(err)
@@ -43,9 +43,11 @@ func (c *Config) readList() map[string]map[string]string {
 	var sectionMap map[string]string
 	isFirstSection := true
 	buf := bufio.NewReader(file)
+
 	for {
 		l, err := buf.ReadString('\n')
 		line := strings.TrimSpace(l)
+		fmt.Println(string(line))
 		if err != nil {
 			if err != io.EOF {
 				CheckErr(err)
@@ -66,15 +68,17 @@ func (c *Config) readList() map[string]map[string]string {
 			section = strings.TrimSpace(line[1 : len(line)-1])
 			sectionMap = make(map[string]string)
 		default:
-			i := strings.IndexAny(line, "=")
+			fmt.Println(line)
+			i := strings.IndexAny(line, ",")
 			if i == -1 {
 				continue
 			}
-			value := strings.TrimSpace(line[i+1 : len(line)])
+			value := strings.TrimSpace(line[i : ])
 			sectionMap[strings.TrimSpace(line[0:i])] = value
 		}
 	}
 	c.Conflist[section] = sectionMap
+
 	return c.Conflist
 }
 

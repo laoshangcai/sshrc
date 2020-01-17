@@ -5,41 +5,83 @@ import (
 	"os"
 	"bufio"
 	"fmt"
+	"io"
+	"strings"
 )
 
-type Cfg struct {
-	filepath string                         //your ini file path directory+file
 
+var group List
+
+type List struct {
+	Server string
 }
-
-type InfoC struct {
-	Host string
-	User string
-	Passwd string
-}
-
-var InfoMap = make(map[string]InfoC, 0)
-
-func TestReadfile(t *testing.T) {
-	ReadLineFile("D:/awesomeProject/src/lsc.com/sshrc/hosts")
-	fmt.Println(InfoMap)
+type Config struct {
+	Filepath string
+	configMap map[string]string
 }
 
 
-func ReadLineFile(fileName string) {
-	if file, err := os.Open(fileName);err !=nil{
-		panic(err)
-	}else {
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan(){
-			info := InfoC {
-				Host: scanner.Text(),
-				User: scanner.Text(),
-				Passwd: scanner.Text(),
+func TestRead(t *testing.T) {
+	var conf= InitConfi("D:/awesomeProject/src/lsc.com/sshrc/hosts")
+	value := conf.GetValue("server1")
+	fmt.Println(value)
+
+}
+
+func InitConfi(filepath string) *Config {
+	c := new(Config)
+	c.Filepath = filepath
+	c.ReadLineFile()
+	return c
+}
+
+func (c *Config) GetValue(section string) string {
+	_,ok := c.configMap[section]
+	if ok{
+		return c.configMap[section]
+	}else{
+		return ""
+	}
+}
+
+func (c *Config) ReadLineFile() map[string]string {
+	file, err := os.Open(c.Filepath)
+	if err != nil {
+		CheckErr(err)
+	}
+	defer file.Close()
+	c.configMap = make(map[string]string)
+	isFirstSection := true
+	buf := bufio.NewReader(file)
+
+	for {
+		l, err := buf.ReadString('\n')
+		line := strings.TrimSpace(l)
+		if err != nil {
+			if err != io.EOF {
+				CheckErr(err)
 			}
-			InfoMap[info.Host] = info
+			if len(line) == 0 {
+				break
+			}
+		}
+		switch {
+		case len(line) == 0:
+		case string(line[0]) == "#":	//增加配置文件备注
+		case line[0] == '[' && line[len(line)-1] == ']':
+			if !isFirstSection{
+				continue
+			}else{
+				isFirstSection = false
+			}
+			section := strings.TrimSpace(line[1 : len(line)-1])
+			group = List {Server: section,}
+		default:
+			c.configMap[group.Server] = line
 		}
 	}
+	return c.configMap
+
 }
 
 

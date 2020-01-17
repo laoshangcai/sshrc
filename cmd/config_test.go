@@ -32,9 +32,7 @@ func Getvalue(st string) string {
 				Passwd: i[2],
 			}
 			InfoList = append(InfoList,info)
-
 			InfoMap[info.Host] = info
-
 		}
 	}
 	return ""
@@ -43,10 +41,9 @@ func Getvalue(st string) string {
 
 func TestConfig(t *testing.T) {
 	var conf= utils.InitConfig("D:/awesomeProject/src/lsc.com/sshrc/hosts.ini")
-	value := conf.GetValue("server1", "host")
-	Getvalue(value)
-
-	fmt.Println(InfoMap)
-
-
+	value := conf.GetValue("server1", "=")
+	fmt.Println(value)
+	//Getvalue(value)
+	//fmt.Println(InfoList)
+	//fmt.Println(InfoMap)
 }
