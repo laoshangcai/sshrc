@@ -2,48 +2,37 @@ package cmd
 
 import (
 	"testing"
-	"fmt"
 	"strings"
     "lsc.com/sshrc/utils"
+	"fmt"
 )
 
-type Configinfo struct {
+type Configin struct {
 	 Host string
 	 User string
 	 Passwd string
 }
 
-var InfoList = make([]Configinfo, 0)
-var InfoMap = make(map[string]Configinfo, 0)
+var InfoLis = make([]Configin, 0)
+var inf = Configin{}
 
+func TestGetcf(t *testing.T) {
+	var conf= utils.InitConfig("D:/awesomeProject/src/lsc.com/sshrc/hosts")
+	value := conf.GetValue("server2")
 
-func Getvalue(st string) string {
-	it := strings.Split(st," ")
-	for _, v := range it {
-		result := strings.Index(v,",")
+	for i := 0; i < len(value); i++ {
+		result := strings.Index(value[i], ",")
 		if result == -1 {
-			fmt.Println("格式不对")
+			inf = Configin{Host: value[i]}
 		} else {
-			i := strings.Split(v,",")
-
-			info := Configinfo {
-				Host: i[0],
-				User: i[1],
-				Passwd: i[2],
+			l := strings.Split(value[i], ",")
+			inf = Configin{
+				Host:   l[0],
+				User:   l[1],
+				Passwd: l[2],
 			}
-			InfoList = append(InfoList,info)
-			InfoMap[info.Host] = info
 		}
+		InfoLis = append(InfoLis, inf)
 	}
-	return ""
-}
-
-
-func TestConfig(t *testing.T) {
-	var conf= utils.InitConfig("D:/awesomeProject/src/lsc.com/sshrc/hosts.ini")
-	value := conf.GetValue("server1", "=")
-	fmt.Println(value)
-	//Getvalue(value)
-	//fmt.Println(InfoList)
-	//fmt.Println(InfoMap)
+	fmt.Println(InfoLis)
 }
