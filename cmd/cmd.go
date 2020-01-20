@@ -28,6 +28,7 @@ func Cmd(host string, user, passwd string, cmd string) []byte {
 	if err != nil {
 		panic(1)
 	}
+
 	return b
 }
 
