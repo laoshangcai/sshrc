@@ -13,7 +13,7 @@ sshrc是一个Go语言开发的程序，可批量远程执行命令。\
 
 2、程序使用示例：\
      # ./sshrc -i server1 -c "ls -lh"
-
+    [下载地址]（https://github.com/laoshangcai/sshrc/releases）\
      参数说明： 
      -i  hosts配置文件中组的关键字，例如 "server1" 。
      -c  执行的命令行。
