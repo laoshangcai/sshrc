@@ -17,7 +17,7 @@ sshrc依赖于cobra包构建命令行支持，该包是支持通用的命令行�
 chmod +x main && mv main /usr/local/bin/
 ```  
 
-[下载链接]:http://github.com/laoshangcai/sshrc.git
+[下载链接]:https://github.com/laoshangcai/sshrc/releases/download/v1.1.0/sshrc
 * [下载链接]  
 
 ### 远程执行命令示例  
