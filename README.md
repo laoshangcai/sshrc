@@ -20,7 +20,7 @@ chmod +x main && mv main /usr/local/bin/
 [下载链接]:http://github.com/laoshangcai/sshrc.git
 * [下载链接]  
 
-###远程执行命令示例  
+### 远程执行命令示例  
 ``` 
 sshrc --host 192.168.1.10 --user root --passwd your-server-password --cmd "ls -a"
 ``` 
@@ -42,7 +42,7 @@ sshrc --host 192.168.1.10 \
 >--cmd 需要执行的命令  
 
 
-###拷贝文件示例 
+### 拷贝文件示例 
 * 拷贝本地主机文件到远程主机  
 ```
 sshrc copy --host 192.168.1.10 --passwd your-server-passwor --src /opt/kube.tar.gz --dest /opt
