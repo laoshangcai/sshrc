@@ -18,7 +18,8 @@ chmod +x main && mv main /usr/local/bin/
 ```  
 
 [下载链接]:http://github.com/laoshangcai/sshrc.git
-* [下载链接]
+* [下载链接]  
+
 ###远程执行命令示例  
 ``` 
 sshrc --host 192.168.1.10 --user root --passwd your-server-password --cmd "ls -a"
