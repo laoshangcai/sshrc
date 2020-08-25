@@ -10,14 +10,14 @@ import (
 	"github.com/wonderivan/logger"
 )
 
-func Connect(user, passwd, pkFile, host string) (*ssh.Session, error) {
-	auth := []ssh.AuthMethod{sshAuthMethod(passwd, pkFile)}
+func (s *SSHRConfig) Connect(host string) (*ssh.Session, error) {
+	auth := []ssh.AuthMethod{sshAuthMethod(s.Password, s.PkFile)}
 	config := ssh.Config{
 		Ciphers: []string{"aes128-ctr", "aes192-ctr", "aes256-ctr", "aes128-gcm@openssh.com", "arcfour256", "arcfour128", "aes128-cbc", "3des-cbc", "aes192-cbc", "aes256-cbc"},
 	}
 
 	clientConfig := &ssh.ClientConfig{
-		User:    user,
+		User:    s.User,
 		Auth:    auth,
 		Timeout: time.Duration(1) * time.Minute,
 		Config:  config,
@@ -46,7 +46,6 @@ func Connect(user, passwd, pkFile, host string) (*ssh.Session, error) {
 	if err := session.RequestPty("xterm", 80, 40, modes); err != nil {
 		return nil, err
 	}
-
 	return session, nil
 }
 
