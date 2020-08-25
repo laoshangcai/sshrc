@@ -55,7 +55,7 @@ sshrc copy --host 192.168.1.10 --passwd your-server-passwor --src /opt/kube.tar.
 sshrc fetch --host 192.168.1.10 --passwd your-server-passwor --src /opt/kube.tar.gz --dest /opt
 ``` 
 >fetch   子命令，指定使用拷贝模块：拷贝远程主机文件到本地主机  
->--src   本地文件路径  
->--dest  远程主机文件存放路径  
+>--src   远程主机文件存放路径  
+>--dest  本地文件路径 
 
 ### 注：当前版本未支持使用配置文件配置主机信息
