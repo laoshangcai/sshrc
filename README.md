@@ -14,7 +14,7 @@ sshrc依赖于cobra包构建命令行支持，该包是支持通用的命令行�
 ### centos安装sshrc
 * 下载二进制文件后，执行如下命令  
 ```
-chmod +x main && mv main /usr/local/bin/
+chmod +x sshrc && mv sshrc /usr/local/bin/
 ```  
 
 [下载链接]:https://github.com/laoshangcai/sshrc/releases/download/v1.1.0/sshrc
